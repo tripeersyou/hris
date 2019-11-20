@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_13_225800) do
+ActiveRecord::Schema.define(version: 2019_11_20_061310) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "date"
@@ -27,10 +27,27 @@ ActiveRecord::Schema.define(version: 2019_11_13_225800) do
     t.index ["leave_id"], name: "index_attendances_on_leave_id"
   end
 
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
   create_table "employees", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "sex"
+    t.date "birthday"
+    t.integer "age"
     t.string "contact_number"
     t.string "pagibig_number"
     t.string "sss_number"
