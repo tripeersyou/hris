@@ -12,17 +12,14 @@
 
 ActiveRecord::Schema.define(version: 2019_11_13_225800) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "attendances", force: :cascade do |t|
     t.date "date"
     t.boolean "is_present"
     t.decimal "pay"
     t.boolean "on_leave"
-    t.bigint "leave_id", null: false
-    t.bigint "employee_id", null: false
-    t.bigint "holiday_id", null: false
+    t.integer "leave_id", null: false
+    t.integer "employee_id", null: false
+    t.integer "holiday_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["employee_id"], name: "index_attendances_on_employee_id"
@@ -45,8 +42,8 @@ ActiveRecord::Schema.define(version: 2019_11_13_225800) do
     t.time "shift_start_time"
     t.time "shift_end_time"
     t.string "day_off"
-    t.bigint "employment_status_id", null: false
-    t.bigint "salary_grade_id", null: false
+    t.integer "employment_status_id", null: false
+    t.integer "salary_grade_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["employment_status_id"], name: "index_employees_on_employment_status_id"
@@ -71,8 +68,8 @@ ActiveRecord::Schema.define(version: 2019_11_13_225800) do
 
   create_table "leave_balances", force: :cascade do |t|
     t.integer "balance"
-    t.bigint "leave_id", null: false
-    t.bigint "employee_id", null: false
+    t.integer "leave_id", null: false
+    t.integer "employee_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["employee_id"], name: "index_leave_balances_on_employee_id"
