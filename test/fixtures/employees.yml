@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: 
+  last_name: 
+  sex: 
+  pagibig_number: 1
+  sss_number: 1
+  philhealth_number: 1
+  tin_number: 1
+  employment_date: 2019-11-14
+  termination_date: 2019-11-14
+  is_terminated: false
+  shift_start_time: 2019-11-14 06:56:01
+  shift_end_time: 2019-11-14 06:56:01
+  day_off: 
+  employment_status: one
+  salary_grade: one
+
+two:
+  first_name: 
+  last_name: 
+  sex: 
+  pagibig_number: 1
+  sss_number: 1
+  philhealth_number: 1
+  tin_number: 1
+  employment_date: 2019-11-14
+  termination_date: 2019-11-14
+  is_terminated: false
+  shift_start_time: 2019-11-14 06:56:01
+  shift_end_time: 2019-11-14 06:56:01
+  day_off: 
+  employment_status: two
+  salary_grade: two

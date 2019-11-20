@@ -5,3 +5,30 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+capi = Calendarific::V2.new(ENV['CALENDARIFIC_API_KEY'])
+
+parameters = {
+    country: 'ph',
+    year: 2,
+    type: 'national'
+}
+
+response = capi.holidays(parameters)
+
+
+puts response['response']['holidays']
+
+response['response']['holidays'].each do |holiday|
+    h = Holiday.new({
+        name: holiday[:name],
+        description: holiday[:description],
+        date: Date.parse(holiday[:date][:iso]),
+        type: holiday[:type][0],
+        weekday: Date.parse(holiday[:date][:iso]).strftime('%A')
+    })
+    if h.save
+        puts "#{h.name} on #{h.date} saved!"
+    end
+end

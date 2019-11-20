@@ -1,6 +1,9 @@
 {
   "name": "hris",
   "private": true,
+  "scripts": {
+    "start": "foreman start -f Procfile.dev"
+  },
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
