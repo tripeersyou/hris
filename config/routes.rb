@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  resources :pages
-  root 'pages#index'
+  resources :employees
+  resources :holidays
+  root 'pages#dashboard'
 end

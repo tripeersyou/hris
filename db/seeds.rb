@@ -7,28 +7,45 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-capi = Calendarific::V2.new(ENV['CALENDARIFIC_API_KEY'])
+# capi = Calendarific::V2.new(ENV['CALENDARIFIC_API_KEY'])
 
-parameters = {
-    country: 'ph',
-    year: 2,
-    type: 'national'
-}
+# parameters = {
+#     country: 'ph',
+#     year: 2,
+#     type: 'national'
+# }
 
-response = capi.holidays(parameters)
+# response = capi.holidays(parameters)
 
 
-puts response['response']['holidays']
+# puts response['response']['holidays']
 
-response['response']['holidays'].each do |holiday|
-    h = Holiday.new({
-        name: holiday[:name],
-        description: holiday[:description],
-        date: Date.parse(holiday[:date][:iso]),
-        type: holiday[:type][0],
-        weekday: Date.parse(holiday[:date][:iso]).strftime('%A')
-    })
-    if h.save
-        puts "#{h.name} on #{h.date} saved!"
-    end
+# response['response']['holidays'].each do |holiday|
+#     h = Holiday.new({
+#         name: holiday[:name],
+#         description: holiday[:description],
+#         date: Date.parse(holiday[:date][:iso]),
+#         type: holiday[:type][0],
+#         weekday: Date.parse(holiday[:date][:iso]).strftime('%A')
+#     })
+#     if h.save
+#         puts "#{h.name} on #{h.date} saved!"
+#     end
+# end
+
+
+if EmploymentStatus.all.empty?
+    EmploymentStatus.create([
+        {status: "Probation"},
+        {status: "Regular"}, 
+        {status: "Terminated"}
+    ])
+end
+
+if SalaryGrade.all.empty?
+    SalaryGrade.create([
+        {grade: "A", daily_pay: 400},
+        {grade: "B", daily_pay: 450}, 
+        {grade: "C", daily_pay: 500}
+    ])
 end
