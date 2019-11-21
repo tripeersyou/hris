@@ -3,6 +3,7 @@ class CreateEmployees < ActiveRecord::Migration[6.0]
     create_table :employees do |t|
       t.string :first_name
       t.string :last_name
+      t.string :civil_status
       t.string :sex
       t.date :birthday
       t.integer :age
@@ -13,7 +14,7 @@ class CreateEmployees < ActiveRecord::Migration[6.0]
       t.string :tin_number
       t.date :employment_date
       t.date :termination_date
-      t.boolean :is_terminated
+      t.boolean :is_terminated, default: false
       t.time :shift_start_time
       t.time :shift_end_time
       t.string :day_off

@@ -1,3 +1,4 @@
+<%= @employee.errors.inspect %>
 <%= simple_form_for @employee do |f| %>
     <h2>Personal Details</h2>
     <div class="row">
@@ -9,29 +10,32 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <%= f.input :sex, collection: ["Female", "Male"], default: false %>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <%= f.input :civil_status, collection: ["Single", "Married", "Solo Parent"], include_blank: false %>
+        </div>
+        <div class="col-md-3">
             <%= f.input :birthday, html5: true, input_html: {min: 64.years.ago.to_s[0..9], max: 18.years.ago.to_s[0..9]} %>
         </div>
-        <div class="col-md-4">
-            <%= f.input :contact_number, input_html: {maxlength: 11, pattern: "[0-9]*"}, label: 'Contact Number' %>
+        <div class="col-md-3">
+            <%= f.input :contact_number, input_html: {maxlength: 11, pattern: "[0-9]*", inputmode: "numeric"}, label: 'Contact Number' %>
         </div>
     </div>
     <h2>Government ID Details</h2>
     <div class="row">
         <div class="col-md-3">
-            <%= f.input :pagibig_number, input_html: {maxlength: 12, pattern: "[0-9]*"}, label: 'PAGIBIG Number' %>
+            <%= f.input :pagibig_number, input_html: {maxlength: 12, pattern: "[0-9]*", inputmode: "numeric"}, label: 'PAGIBIG Number' %>
         </div>
         <div class="col-md-3">
-            <%= f.input :sss_number, input_html: {maxlength: 10, pattern: "[0-9]*"}, label: 'SSS Number' %>
+            <%= f.input :sss_number, input_html: {maxlength: 10, pattern: "[0-9]*", inputmode: "numeric"}, label: 'SSS Number' %>
         </div>
         <div class="col-md-3">
-            <%= f.input :philhealth_number, input_html: {maxlength: 12, pattern: "[0-9]*"}, label: 'PhilHealth Number' %>
+            <%= f.input :philhealth_number, input_html: {maxlength: 12, pattern: "[0-9]*", inputmode: "numeric"}, label: 'PhilHealth Number' %>
         </div>
         <div class="col-md-3">
-            <%= f.input :tin_number, input_html: {maxlength: 9, pattern: "[0-9]*"}, label: 'TIN Number' %>
+            <%= f.input :tin_number, input_html: {maxlength: 9, pattern: "[0-9]*", inputmode: "numeric"}, label: 'TIN Number' %>
         </div>
     </div>
     <h2>Employment Details</h2>
@@ -49,8 +53,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <%= f.association :salary_grade, label: 'Salary Grade', include_blank: false %>
+        </div>
+        <div class="col-md-6">
+            <%= f.input :day_off, collection: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], include_blank: false, label: "Day Off" %>
         </div>
     </div>
     <div class="row">

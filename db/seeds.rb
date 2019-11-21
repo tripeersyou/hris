@@ -49,3 +49,13 @@ if SalaryGrade.all.empty?
         {grade: "C", daily_pay: 500}
     ])
 end
+
+if Leave.all.empty?
+    Leave.create([
+        {name: "Service Incentive Leave", days: 5},
+        {name: "Maternity Leave", days: 60},
+        {name: "Paternity Leave", days: 7},
+        {name: "Solo Parent Leave", days: 7},
+        {name: "VAWC Leave", days: 10}
+    ])
+end

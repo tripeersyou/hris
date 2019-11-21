@@ -1,7 +1,7 @@
 class CreateLeaves < ActiveRecord::Migration[6.0]
   def change
     create_table :leaves do |t|
-      t.string :type
+      t.string :name
       t.integer :days
 
       t.timestamps

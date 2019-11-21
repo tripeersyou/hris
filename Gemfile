@@ -44,7 +44,7 @@ group :development, :test do
   # Shim to load environment variables from .env into ENV in development.
   gem 'dotenv-rails'
   # ActiveRecord sqlite3 for development
-  # gem 'sqlite3'
+  gem 'sqlite3'
   # Better errors
   gem "better_errors"
 end
