@@ -1,0 +1,32 @@
+<% if @employees.empty? %>
+    <div class="vertical-align">
+        <h1 class="centered">It looks a little empty in here.</h1>
+        <i class="fas fa-user-circle fa-7x blocked auto"></i>
+        <h3 class="centered">Add an employee now</h3>
+        <div class="col-md-4 offset-md-4">
+            <%= link_to 'Add Employee', new_employee_path, class: 'btn btn-outline-primary btn-block' %>
+        </div>
+    </div>
+<% else %>
+    <h1>Employees</h1>
+    <div class="row">
+        <% @employees.each do |employee| %>
+            <div class="col-md-6">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= employee %></h5>
+                        <p class="card-text">Contact Number: <%= employee.contact_number %></</p>
+                    </div>                    
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-muted">Shift: <%= employee.shift %></li>
+                            <li class="list-group-item text-muted">Day Off: <%= employee.day_off %></li>
+                        </ul>
+                    <div class="card-body">
+                        <%= link_to "View Profile", employee_path(employee), class: 'card-link btn btn-primary' %>
+                        <%= link_to "Edit Profile", edit_employee_path(employee), class: 'card-link btn btn-info' %>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </div>
+<% end %>

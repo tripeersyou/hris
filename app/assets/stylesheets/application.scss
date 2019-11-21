@@ -29,6 +29,20 @@ abbr[title="required"] {
     color: red;
 }
 
+.blocked {
+    display: block;
+}
+
+.auto {
+    margin: auto;
+}
+
+.vertical-align{
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 

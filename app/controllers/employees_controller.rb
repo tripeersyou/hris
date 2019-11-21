@@ -4,6 +4,8 @@ class EmployeesController < ApplicationController
     def index
         @employees = Employee.all
     end
+    def show
+    end
     def new
         @employee = Employee.new
     end
@@ -11,7 +13,7 @@ class EmployeesController < ApplicationController
         @employee = Employee.new(employee_params)
         if @employee.save
             @employee.delay.generate_leave_balances
-            redirect_to employees_path
+            redirect_to '/employees'
         else
             render :new
         end

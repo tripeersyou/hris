@@ -30,6 +30,13 @@ class Employee < ApplicationRecord
     self.age = Date.today.year - self.birthday.year
   end
 
+  def shift 
+    "#{shift_start_time.strftime("%r")} - #{shift_end_time.strftime("%r")}"
+  end
+
+  def to_s
+    "#{first_name} #{last_name}"
+  end
   def generate_leave_balances
     Leave.all.each do |leave|
         if leave.name == "Service Incentive Leave"
