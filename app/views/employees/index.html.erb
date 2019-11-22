@@ -8,22 +8,29 @@
         </div>
     </div>
 <% else %>
-    <h1>Employees</h1>
+    <br>
+    <h1 class="inline" >Employee Dashboard</h1>
+    <a href="<%= new_employee_path %>" class="btn btn-outline-primary float-md-right"><i class="fas fa-user-plus"></i> Add Employee</a>
+    <hr>
     <div class="row">
         <% @employees.each do |employee| %>
-            <div class="col-md-6">
-                <div class="card" style="width: 18rem;">
+            <div class="col-md-4">
+                <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><%= employee %></h5>
-                        <p class="card-text">Contact Number: <%= employee.contact_number %></</p>
-                    </div>                    
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item text-muted">Shift: <%= employee.shift %></li>
-                            <li class="list-group-item text-muted">Day Off: <%= employee.day_off %></li>
-                        </ul>
-                    <div class="card-body">
-                        <%= link_to "View Profile", employee_path(employee), class: 'card-link btn btn-primary' %>
-                        <%= link_to "Edit Profile", edit_employee_path(employee), class: 'card-link btn btn-info' %>
+                        <p class="card-subtitle mb-2 text-muted">Contact Number: <a href="tel:<%= employee.contact_number %>"><%= employee.contact_number %></a></p>
+                        <% if employee.employment_status == "Probation" %>
+                            <p class="card-subtitle mb-2 text-muted">Employment Status: <span class="text-warning"><%= employee.employment_status %></span></p>
+                        <% elsif employee.employment_status == "Regular" %>
+                            <p class="card-subtitle mb-2 text-muted">Employment Status: <span class="text-warning"><%= employee.employment_status %></span></p>
+                        <% elsif employee.employment_status == "Terminated" %>
+                            <p class="card-subtitle mb-2 text-muted">Employment Status: <span class="text-warning"><%= employee.employment_status %></span></p>
+                        <% end %>
+                        <p class="card-text">
+                            Shift: <%= employee.shift %>
+                        </p>
+                        <%= link_to "View Profile", employee_path(employee), class: 'card-link btn btn-outline-primary' %>
+                        <%= link_to "Edit Profile", edit_employee_path(employee), class: 'card-link btn btn-outline-info' %>
                     </div>
                 </div>
             </div>

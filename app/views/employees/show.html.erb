@@ -1,0 +1,139 @@
+<h1 class="centered">Employee Profile</h1>
+
+<h2 class="inline"><i class="far fa-user-circle fa-3x align-middle"></i> <%= @employee %></h2>
+<div class="profile-actions float-md-right">
+    <%= link_to 'Edit Profile', edit_employee_path(@employee), class: 'btn btn-outline-primary' %> &nbsp;
+    <%= link_to 'Terminate Employment', employee_path(@employee), method: :delete, data: {confirm: "Are you sure?"}, class: 'btn btn-outline-danger' %>
+</div>
+<br><br>
+<ul class="nav nav-tabs" id="employeeProfileTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="general-information" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Genral Information</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="attendance-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Attendance and Leaves</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pay-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Pay & Wages</a>
+  </li>
+</ul>
+<div class="tab-content" id="employeeProfileTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="general-information">
+    <br class="d-sm-none d-md-block">
+    <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="far fa-address-card"></i> <strong>Personal Information</strong></h5>
+                        <div class="card-text">Full Name: <%= @employee %></div>
+                        <div class="card-text">Contact Number: <%= @employee.contact_number %></div>
+                        <div class="card-text">Birthday: <%= @employee.birthday %></div>
+                        <div class="card-text">Age: <%= @employee.age %> years old</div>
+                        <div class="card-text">Sex: <%= @employee.sex %></div>
+                    </div>    
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="far fa-id-badge"></i> <strong>Government Identification</strong></h5>
+                        <div class="card-text">SSS Number: <%= @employee.sss_number == '' ? "Not yet provided" : @employee.sss_number %></div>
+                        <div class="card-text">PAGIBIG Number: <%= @employee.pagibig_number == '' ? "Not yet provided" : @employee.sss_number %></div>
+                        <div class="card-text">PhilHealth Number: <%= @employee.philhealth_number == '' ? "Not yet provided" : @employee.sss_number %></div>
+                        <div class="card-text">Tax Identification Number: <%= @employee.tin_number == '' ? "Not yet provided" : @employee.sss_number %></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <br class="d-sm-none d-md-block">
+    <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-briefcase"></i> <strong>Employment Information</strong></h5>
+                        <div class="card-text">Employment Date: <%= @employee.employment_date %></div>
+                        <div class="card-text">Employment Status: <%= @employee.employment_status %></div>
+                        <div class="card-text">Day Off: Every <%= @employee.day_off %></div>
+                        <div class="card-text">Shift: <%= @employee.shift %></div>
+                        <div class="card-text">Salary Grade: <%= @employee.salary_grade %></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="attendance-tab">
+    <br class="d-sm-none d-md-block">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="far fa-calendar-alt"></i> Attendance</h5>
+                    <% if @employee.attendances.where('is_present = ?' ,true).empty? %>
+                        <h6 class="centered">No attendance record yet for this employee</h6>
+                    <% else %>
+
+                    <% end %>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="far fa-list-alt"></i> Absences and Leave Usage</h5>
+                    <% if @employee.attendances.where('is_present = ?' , false).empty? %>
+                        <h6 class="centered">No absences and leave usage record yet for this employee</h6>
+                    <% else %>
+
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br class="d-sm-none d-md-block">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="card-body"><i class="fas fa-skiing-nordic"></i> Leave Balances</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Leave Type</th>
+                                <th scope="col">Unused Days</th>
+                                <th scope="col">Days Used</th>
+                                <th scope="col">Total Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @employee.leave_balances.each do |leave_balance| %>
+                            <tr>
+                                <td><%= leave_balance%></td>
+                                <td><%= leave_balance.balance %> days</td>
+                                <td><%= leave_balance.leave.days - leave_balance.balance %> days</td>
+                                <td><%= leave_balance.leave.days %> days</td>
+                            </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="pay-tab">
+    <br class="d-sm-none d-md-block">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-coins"></i> Estimated Pay</h5>
+                    <div class="card-text">Daily Pay: Php <%= @employee.daily_pay %></div>
+                    <div class="card-text">Estimated Weekly Pay: Php <%= @employee.estimated_weekly_pay %></div>
+                    <div class="card-text">Estimated Monthly Pay: Php <%= @employee.estimated_monthly_pay %></div>
+                    <div class="card-text">Estimated 13th Month Pay: Php <%= @employee.estimated_thirteenth_month_pay %></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

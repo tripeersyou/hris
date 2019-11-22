@@ -1,10 +1,13 @@
 class EmployeesController < ApplicationController
-    before_action :set_employee, only: [:show, :edit, :update]
+    before_action :set_employee, only: [:show, :edit, :update, :destroy]
 
     def index
-        @employees = Employee.all
+        @employees = Employee.where(is_terminated: false).eager_load(:employment_status)
     end
     def show
+        if @employee.is_terminated
+            redirect_to employees_path, alert: 'That employee is already terminated'
+        end
     end
     def new
         @employee = Employee.new
@@ -12,17 +15,23 @@ class EmployeesController < ApplicationController
     def create
         @employee = Employee.new(employee_params)
         if @employee.save
-            @employee.delay.generate_leave_balances
-            redirect_to '/employees'
+            redirect_to employees_path, notice: "Employee #{@employee} successfully created."
         else
-            render :new
+            render :new, alert: "There seems to be a problem with your given information."
         end
     end
     def edit
     end
     def update
+        if @employee.update(employee_params)
+            redirect_to employees_path, notice: "Employee #{@employee} successfully updated"
+        else
+            render :edit, alert: "There seems to be a problem with your given information."
+        end
     end
     def destroy
+        @employee.terminate_employment
+        redirect_to employees_path
     end
     private
         def employee_params

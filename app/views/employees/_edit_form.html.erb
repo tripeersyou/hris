@@ -1,24 +1,20 @@
 <%= simple_form_for @employee do |f| %>
     <h2>Personal Details</h2>
+    <% if @employee.sex == 'Female' %>
+        <div class="row">
+            <div class="col-md-6">
+                <%= f.input :first_name, label: 'First Name', required: true%>
+            </div>
+            <div class="col-md-6">
+                <%= f.input :last_name, label: 'Last Name', required: true %>
+            </div>
+        </div>
+    <% end %>
     <div class="row">
         <div class="col-md-6">
-            <%= f.input :first_name, label: 'First Name', required: true%>
-        </div>
-        <div class="col-md-6">
-            <%= f.input :last_name, label: 'Last Name', required: true %>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <%= f.input :sex, collection: ["Female", "Male"], default: false, include_blank: false %>
-        </div>
-        <div class="col-md-3">
             <%= f.input :civil_status, collection: ["Single", "Married", "Solo Parent"], include_blank: false %>
         </div>
-        <div class="col-md-3">
-            <%= f.input :birthday, html5: true, input_html: {min: 64.years.ago.to_s[0..9], max: 18.years.ago.to_s[0..9], required: true} %>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
             <%= f.input :contact_number, input_html: {maxlength: 11, pattern: "[0-9]*", inputmode: "numeric", required: true}, label: 'Contact Number' %>
         </div>
     </div>
@@ -38,11 +34,6 @@
         </div>
     </div>
     <h2>Employment Details</h2>
-    <div class="row">
-        <div class="col-md-12">
-            <%= f.input :employment_date, html5: true, label: 'Employment Date', required: true%>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-6">
             <%= f.input :shift_start_time, html5: true, label: 'Shift Start Time', required: true %>
