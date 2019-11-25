@@ -15,8 +15,14 @@ class Employee < ApplicationRecord
   validates :sss_number, length: {is: 10}, numericality: true, allow_blank: true
   validates :tin_number, length: {is: 9}, numericality:  true, allow_blank: true
 
+
+  # Model change methods
+  def months_served
+    (Date.today.year * 12 + Date.today.month) - (employment_date.year * 12 + employment_date.month)
+  end
+
   def set_employment_status
-    if (Date.today.year * 12 + Date.today.month) - (employment_date.year * 12 + employment_date.month) < 6
+    if months_served < 6
         self.employment_status = EmploymentStatus.find_by(status: "Probation")
     else
         self.employment_status = EmploymentStatus.find_by(status: "Regular")
@@ -38,6 +44,10 @@ class Employee < ApplicationRecord
     self.age = ((Time.now - self.birthday.to_time) / 1.year.seconds).floor
   end
 
+  # View Methods
+  def attendance_today
+    self.attendances.where(date: Date.today)
+  end
   def shift 
     "#{shift_start_time.strftime("%r")} - #{shift_end_time.strftime("%r")}"
   end
@@ -56,16 +66,12 @@ class Employee < ApplicationRecord
 
   def estimated_thirteenth_month_pay
     if (Date.new(Date.today.year, 12, 24).year * 12 + Date.new(Date.today.year, 12, 24).month) - (employment_date.year * 12 + employment_date.month) < 12
-      months_served = (Date.new(Date.today.year, 12, 24).year * 12 + Date.new(Date.today.year, 12, 24).month) - (employment_date.year * 12 + employment_date.month) + 1
-      proration = months_served / 12.0
+      prorated_months = (Date.new(Date.today.year, 12, 24).year * 12 + Date.new(Date.today.year, 12, 24).month) - (employment_date.year * 12 + employment_date.month) + 1
+      proration = prorated_months / 12.0
       (proration * estimated_monthly_pay).round(2)
     else 
       estimated_monthly_pay
     end 
-  end
-
-  def to_s
-    "#{first_name} #{last_name}"
   end
 
   def titleize_name
@@ -73,6 +79,57 @@ class Employee < ApplicationRecord
     self.last_name = self.last_name.titleize
   end
 
+  def weekly_attendance
+    weekly_attendance = self.attendances.where(is_present: true, date: Date.today.at_beginning_of_week..Date.today)
+  end
+  
+  def monthly_attendance
+    monthly_attendance = self.attendances.where(is_present: true, date: Date.today.at_beginning_of_month..Date.today)
+  end
+
+  def week_to_date_pay
+    if weekly_attendance.empty?
+      "No attendance yet for this week."
+    else
+      weekly_attendance.each do |attendance|
+        pay = attendance.daily_pay
+      end
+      "Php #{pay}"
+    end
+  end
+
+  def month_to_date_pay
+    if monthly_attendance.empty?
+      "No attendance yet for this month."
+    else
+      monthly_attendance.each do |attendance|
+        pay = attendance.daily_pay
+      end
+      "Php #{pay}"
+    end
+  end
+
+  def pay_today
+    attendance_today = self.attendances.where(date: Date.today)
+    if !attendance_today.empty?
+      attendance_today = attendance_today.first
+      if attendance_today.date.strftime("%A") == self.day_off && attendance_today.is_present == false
+        "Day off, no pay"
+      elsif attendance_today.date.strftime("%A") != self.day_off && attendoance_today.is_present == false
+        "Absent, no pay"
+      elsif attendance_today.date.strftime("%A") != self.day_off && attendance_today.is_present == true
+        "Php #{attendance_today.pay}"
+      end
+    else 
+      "No attendance recorded yet today"
+    end
+  end
+
+  def to_s
+    "#{first_name} #{last_name}"
+  end
+
+  # Async Functions
   def generate_leave_balances
     Leave.all.each do |leave|
         if leave.name == "Service Incentive Leave"
@@ -99,5 +156,14 @@ class Employee < ApplicationRecord
     end
   end
   handle_asynchronously :generate_leave_balances
+
+  # Instance methods
+  def self.expected_today
+    Employee.where.not(day_off: Date.today.strftime("%A")).where('employment_date <= ?', Date.today).where(is_terminated: false).order(shift_start_time: :asc)
+  end
+
+  def self.day_off_today
+    Employee.where(day_off: Date.today.strftime("%A")).where('employment_date <= ?', Date.today).where(is_terminated: false).order(shift_start_time: :asc)
+  end
 
 end

@@ -7,31 +7,65 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-# capi = Calendarific::V2.new(ENV['CALENDARIFIC_API_KEY'])
+capi = Calendarific::V2.new(ENV['CALENDARIFIC_API_KEY'])
 
-# parameters = {
-#     country: 'ph',
-#     year: 2,
-#     type: 'national'
-# }
+parameters = {
+    country: 'ph',
+    year: Date.today.year,
+    type: 'national'
+}
 
-# response = capi.holidays(parameters)
+response = capi.holidays(parameters)
 
+response['response']['holidays'].each do |holiday|
+    regular = [
+        "New Year's Day",
+        "The Day of Valor",
+        "Maundy Thursday",
+        "Good Friday",
+        "Labor Day",
+        "Independence Day",
+        "National Heroes Day",
+        "Bonifacio Day",
+        "Christmas Day",
+        "Rizal Day"    
+    ]
 
-# puts response['response']['holidays']
+    if regular.include?(holiday['name'])
+        h = Holiday.new({
+            name: holiday['name'],
+            description: holiday['description'],
+            date: Date.parse(holiday['date']['iso']),
+            kind: "Regular",
+            weekday: Date.parse(holiday['date']['iso']).strftime('%A')
+        })
+        if h.save
+            puts "Holiday #{h.name} on #{h.date} created."
+        end
+    else
+        h = Holiday.new({
+            name: holiday['name'],
+            description: holiday['description'],
+            date: Date.parse(holiday['date']['iso']),
+            kind: "Special",
+            weekday: Date.parse(holiday['date']['iso']).strftime('%A')
+        })
+        if h.save
+            puts "Holiday #{h.name} on #{h.date} created."
+        end
+    end
+end
 
-# response['response']['holidays'].each do |holiday|
-#     h = Holiday.new({
-#         name: holiday[:name],
-#         description: holiday[:description],
-#         date: Date.parse(holiday[:date][:iso]),
-#         type: holiday[:type][0],
-#         weekday: Date.parse(holiday[:date][:iso]).strftime('%A')
-#     })
-#     if h.save
-#         puts "#{h.name} on #{h.date} saved!"
-#     end
-# end
+h = Holiday.new({
+    name: "Feast of the Immaculate Conception",
+    description: '',
+    date: Date.new(parameters[:year], 12, 8),
+    kind: "Special",
+    weekday: Date.new(parameters[:year],12,8).strftime('%A')
+})
+if h.save
+    puts "Holiday Feast of the Immaculate Conception on #{Date.new(parameters[:year], 12, 8)} created."
+end
 
 
 if EmploymentStatus.all.empty?
@@ -40,6 +74,7 @@ if EmploymentStatus.all.empty?
         {status: "Regular"}, 
         {status: "Terminated"}
     ])
+    puts "Created Employment Statuses."
 end
 
 if SalaryGrade.all.empty?
@@ -48,6 +83,7 @@ if SalaryGrade.all.empty?
         {grade: "B", daily_pay: 450}, 
         {grade: "C", daily_pay: 500}
     ])
+    puts "Created default Salary Grades."
 end
 
 if Leave.all.empty?
@@ -58,4 +94,5 @@ if Leave.all.empty?
         {name: "Solo Parent Leave", days: 7},
         {name: "VAWC Leave", days: 10}
     ])
+    puts "Created different Leave types."
 end

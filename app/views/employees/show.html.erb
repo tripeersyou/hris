@@ -1,24 +1,32 @@
 <h1 class="centered">Employee Profile</h1>
-
 <h2 class="inline"><i class="far fa-user-circle fa-3x align-middle"></i> <%= @employee %></h2>
-<div class="profile-actions float-md-right">
+
+<div class="profile-actions float-md-right d-sm-none d-md-block">
     <%= link_to 'Edit Profile', edit_employee_path(@employee), class: 'btn btn-outline-primary' %> &nbsp;
     <%= link_to 'Terminate Employment', employee_path(@employee), method: :delete, data: {confirm: "Are you sure?"}, class: 'btn btn-outline-danger' %>
 </div>
-<br><br>
+
+<div class="profile-actions d-sm-block d-md-none">
+    <%= link_to 'Edit Profile', edit_employee_path(@employee), class: 'btn btn-outline-primary btn-block' %>
+    <%= link_to 'Terminate Employment', employee_path(@employee), method: :delete, data: {confirm: "Are you sure?"}, class: 'btn btn-outline-danger btn-block' %>
+</div>
+
+<br><br class="d-sm-none d-md-block">
+
 <ul class="nav nav-tabs" id="employeeProfileTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="general-information" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Genral Information</a>
+    <a class="nav-link active" id="general-information-tab" data-toggle="tab" href="#general-information" role="tab" aria-controls="general-information" aria-selected="true">Genral Information</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="attendance-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Attendance and Leaves</a>
+    <a class="nav-link" id="attendance-tab" data-toggle="tab" href="#attendance" role="tab" aria-controls="attendance" aria-selected="false">Attendance and Leaves</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="pay-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Pay & Wages</a>
+    <a class="nav-link" id="pay-tab" data-toggle="tab" href="#pay" role="tab" aria-controls="contact" aria-selected="false">Pay & Wages</a>
   </li>
 </ul>
+
 <div class="tab-content" id="employeeProfileTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="general-information">
+  <div class="tab-pane fade show active" id="general-information" role="tabpanel" aria-labelledby="general-information">
     <br class="d-sm-none d-md-block">
     <div class="row">
             <div class="col-md-6">
@@ -61,13 +69,13 @@
             </div>
     </div>
   </div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="attendance-tab">
+  <div class="tab-pane fade" id="attendance" role="tabpanel" aria-labelledby="attendance-tab">
     <br class="d-sm-none d-md-block">
     <div class="row">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="far fa-calendar-alt"></i> Attendance</h5>
+                    <h5 class="card-title"><i class="far fa-calendar-alt"></i> <strong>Attendance</strong></h5>
                     <% if @employee.attendances.where('is_present = ?' ,true).empty? %>
                         <h6 class="centered">No attendance record yet for this employee</h6>
                     <% else %>
@@ -79,7 +87,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="far fa-list-alt"></i> Absences and Leave Usage</h5>
+                    <h5 class="card-title"><i class="far fa-list-alt"></i> <strong>Absences and Leave Usage</strong></h5>
                     <% if @employee.attendances.where('is_present = ?' , false).empty? %>
                         <h6 class="centered">No absences and leave usage record yet for this employee</h6>
                     <% else %>
@@ -93,7 +101,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <h5 class="card-body"><i class="fas fa-skiing-nordic"></i> Leave Balances</h5>
+                <h5 class="card-body"><i class="fas fa-skiing-nordic"></i> <strong>Leave Balances</strong></h5>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -120,17 +128,27 @@
         </div>
     </div>
   </div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="pay-tab">
+  <div class="tab-pane fade" id="pay" role="tabpanel" aria-labelledby="pay-tab">
     <br class="d-sm-none d-md-block">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-coins"></i> Estimated Pay</h5>
+                    <h5 class="card-title"><i class="fas fa-coins"></i> <strong>Estimated Pay</strong></h5>
                     <div class="card-text">Daily Pay: Php <%= @employee.daily_pay %></div>
                     <div class="card-text">Estimated Weekly Pay: Php <%= @employee.estimated_weekly_pay %></div>
                     <div class="card-text">Estimated Monthly Pay: Php <%= @employee.estimated_monthly_pay %></div>
                     <div class="card-text">Estimated 13th Month Pay: Php <%= @employee.estimated_thirteenth_month_pay %></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-funnel-dollar"></i> <strong>Current Pay</strong></h5>
+                    <div class="card-text">This Day's Pay (<%= Date.today.to_s %>): <%= @employee.pay_today %></div>
+                    <div class="card-text">This Week's Pay (<%= Date.today.at_beginning_of_week.to_s %>): <%= @employee.week_to_date_pay %></div>
+                    <div class="card-text">This Month's Pay (<%= Date.today.at_beginning_of_month.strftime("%B %Y")%>): <%= @employee.month_to_date_pay %></div>
                 </div>
             </div>
         </div>
