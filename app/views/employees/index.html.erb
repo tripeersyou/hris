@@ -9,9 +9,8 @@
     </div>
 <% else %>
     <br>
-    <h1 class="inline" >Employee Dashboard</h1>
-    <a href="<%= new_employee_path %>" class="btn btn-outline-primary float-md-right d-sm-none d-md-block"><i class="fas fa-user-plus"></i> Add Employee</a>
-    <a href="<%= new_employee_path %>" class="btn btn-outline-primary btn-block d-sm-block d-md-none"><i class="fas fa-user-plus"></i> Add Employee</a>
+    <h1 class="centered" >Employee Dashboard</h1>
+    <a href="<%= new_employee_path %>" class="btn btn-outline-primary btn-block"><i class="fas fa-user-plus"></i> Add Employee</a>
     <hr>
     <div class="row">
         <% @employees.each do |employee| %>

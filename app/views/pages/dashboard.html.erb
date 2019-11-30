@@ -1,16 +1,16 @@
 <h1>Dashboard</h1>
 <hr>
 <div class="row"> 
+    <% if !@employees_today.empty? %>
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">
-                    <i class="fas fa-calendar-day"></i> Expected Employees Today &nbsp;
-                    <%= link_to 'Mark All Present', attendances_today_path, class: 'btn btn-outline-primary d-sm-none d-md-block float-md-right' %>
-                    <%= link_to 'Mark All Present', attendances_today_path, class: 'btn btn-outline-primary btn-block d-sm-block d-md-none' %>
+                    <i class="fas fa-calendar-day"></i> Expected Employees Today
                 </h5>
+                <%= link_to 'Mark All Present', attendances_today_path, class: 'btn btn-outline-primary btn-block' %>
                 <br class="d-sm-none d-md-block">
-                <div class="responsive-table">
+                <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
@@ -39,6 +39,7 @@
             </div>
         </div>
     </div>
+    <% end %>
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
